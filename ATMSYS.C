@@ -86,6 +86,7 @@
 //Function to Clear Input Buffer. (Error Trapping.)
 void clrIB() {
  char ch;
+ //Read and discard characters from the buffer until a newline or EOF is encountered.
  while((ch = getchar()) != '\n' && ch != EOF);
 }
 
