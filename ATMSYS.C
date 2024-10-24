@@ -1,5 +1,7 @@
 //ATM SYSTEM NI KD :>
 //I use double instead of float because double is more precise than float.
+//Last Edited Oct 24, 2024
+//Added some Error Trapping to prevent crashing. ^_^
 #include<stdio.h>
 #include<conio.h>
 #include<stdlib.h>
@@ -71,7 +73,7 @@
    printf("Insufficient balance!\n");
 } else {
    balance -= withdraw;
-   printf("\nThe withdrawal was successful!\nPhp%f is your new balance.\n",balance);
+   printf("\nThe withdrawal was successful!\nPhp%.2f is your new balance.\n",balance);
   }
 }
 
@@ -80,6 +82,13 @@
   clrscr();
   printf("\nPhp%.2f is your current balance.\n",balance);
 }
+//Start of Error Trapping.
+//Function to Clear Input Buffer. (Error Trapping.)
+void clrIB() {
+ char ch;
+ while((ch = getchar()) != '\n' && ch != EOF);
+}
+
  //Main
  int main() {
   int option;
@@ -94,7 +103,14 @@
 
  do{
   Menu();
-  scanf("%d",&option);
+  //Checks if the user input is a valid integer. If it's not the condition is true, and the error handling code is executed.
+  if(scanf("%d",&option) != 1) {
+  clrscr();
+  printf("Error: Invalid Input! Letters, Strings, & Special Characters Are Not Allowed.");
+  clrIB();//Calling the function. Clears the invalid input from the buffer.
+  continue;//Skips to the next iteration, Re-displaying the menu.
+  //End of Error Trapping.
+}
 
   switch(option) {
    case 1:
@@ -108,10 +124,13 @@
     break;
    case 4:
     printf("Thank You! Goodbye.");
-    getch();
+    sleep(2);
+    printf("\nProgram Exiting...");
+    sleep(1);
     break;
    default:
-    printf("Error: Invalid option! Please try again.");
+    clrscr();
+    printf("Error: Invalid option! Please Choose Between (1, 2, 3, & 4).");
   }
 } while(option != 4);
 
